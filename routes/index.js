@@ -38,8 +38,6 @@ router.post('/login', (req, res) => {
   console.log(req.body);
   // const reqBody = JSON.parse(req.body);
   // console.log(reqBody);
-  employeeID = req.body.employeeId;
-  locationID = req.body.restaurantId;
   // console.log(employeeID+locationID);
   res.json({success: true});
 });
