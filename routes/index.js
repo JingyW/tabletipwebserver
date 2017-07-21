@@ -35,11 +35,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  console.log(req.body);
-  // const reqBody = JSON.parse(req.body);
-  // console.log(reqBody);
-  // console.log(employeeID+locationID);
-  res.json({success: true});
+  console.log(req.body);   //{ locationId: 'TB5bxM9c', employeeId: '200' }
+  if (req.body.locationId === locationID && req.body.employeeId === EmployeeID) {
+    res.json({success: true});
+  }
+  else {
+    res.json({success: false})
+  }
 });
 
 //Route to get the Employee Name
@@ -95,7 +97,8 @@ router.get('/goalandperformance', (request, response) => {
     else {
       response.json({
         expectedValue: results[0].ExpectedValue,
-        newQuantity: results[0].NewQty
+        newQuantity: results[0].NewQty,
+        day: day
       });
     }
   });
