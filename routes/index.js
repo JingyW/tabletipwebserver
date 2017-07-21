@@ -36,12 +36,13 @@ router.get('/', (req, res) => {
 
 router.post('/login', (req, res) => {
   console.log(req.body);   //{ locationId: 'TB5bxM9c', employeeId: '200' }
-  if (req.body.locationId === locationID && req.body.employeeId.toString() === EmployeeID) {
-    res.json({success: true});
-  }
-  else {
-    res.json({success: false})
-  }
+  // if (req.body.locationId === locationID && req.body.employeeId.toString() === EmployeeID) {
+  //   res.json({success: true});
+  // }
+  // else {
+  //   res.json({success: false})
+  // }
+  res.json({success: true});
 });
 
 //Route to get the Employee Name
