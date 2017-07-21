@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
 
 router.post('/login', (req, res) => {
   console.log(req.body);   //{ locationId: 'TB5bxM9c', employeeId: '200' }
-  if (req.body.locationId === locationID && req.body.employeeId === EmployeeID) {
+  if (req.body.locationId === locationID && req.body.employeeId.toString() === EmployeeID) {
     res.json({success: true});
   }
   else {
