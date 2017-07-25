@@ -151,5 +151,49 @@ router.get('/tips', (request, response) => {
   });
 });
 
-// export default router;
+router.get('/goalhistory', (request, response) => {
+  const tableName = locationID + "_goals";
+  const subQuery = "(SELECT * FROM " + tableName + " t3 LEFT JOIN Skill_Info t4 USING (ID))";
+  const sql = "SELECT * FROM " + subQuery + " t1 WHERE EmployeeID = ? ORDER BY WeekOf DESC";
+  connection.query(sql, [employeeID], (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      response.json({
+        weekOf: results[0].WeekOf,
+        training: results[0].Direction + results[0].Name + results[0].Category,
+        expectedValue: results[0].ExpectedValue,
+        newQty: results[0].NewQty,
+        lift: results[0].Lift,
+        actualLift: results[0].ActualLift
+      });
+    }
+  });
+});
+
+router.get('/leaderboard', (request, response) => {
+  const tableName = locationID + "_goals";
+  const empTable = locationID + "_employees";
+  const subQuery = "(SELECT * FROM " + tableName + " t3 LEFT JOIN " + empTable + " t4 USING (EmployeeID) WHERE WeekOf < " + connection.escape(day) +") ";
+  const subQuery2 = "(SELECT * FROM " + tableName + " WHERE WeekOf < " + connection.escape(day) +") ";
+
+  const sql = "SELECT t1.EmployeeID, t1.Picture, t1.Name, t1.Lift, t1.ActualLift, (t1.NewQty/ t1.ExpectedValue) AS Score FROM " + subQuery + " t1 LEFT OUTER JOIN "
+  + subQuery2 + " t2 ON (t1.EmployeeID = t2.EmployeeID AND t1.WeekOf < t2.WeekOf) WHERE t2.EmployeeID IS NULL ORDER BY Score DESC"
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      response.json([{
+        name: results[0].Name,
+        score: results[0].Score,
+        picture: results[0].Picture.toString(),
+        lift: results[0].Lift,
+        actualLift: results[0].ActualLift
+    }])
+    }
+  });
+});
+
 module.exports = router;
