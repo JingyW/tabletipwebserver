@@ -26,8 +26,21 @@ connection.connect(function(err) {
 let locationID = 'TB5bxM9c';
 let employeeID = '200';
 const date = new Date();
-const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
-const day = epochDay + (date.getDay() % 8);
+
+
+var parts = new Date().toISOString().substring(0, 10).split('-');
+var dd = parts[2];
+var mm = parts[1] - 1;
+var yy = Number(parts[0]);
+if (yy < 1000) { yy = 2000 + yy; }
+var dt = new Date(yy, mm, dd);
+var secs = dt.valueOf() / 1000;
+var hours = secs / 3600;
+var day = ~~(hours / 24);
+
+//
+// const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
+// const day = epochDay + date.getDay();
 
 
 router.get('/', (req, res) => {
