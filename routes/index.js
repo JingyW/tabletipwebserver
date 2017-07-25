@@ -27,7 +27,7 @@ let locationID = 'TB5bxM9c';
 let employeeID = '200';
 const date = new Date();
 const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
-const day = epochDay + (8 % date.getDay());
+const day = epochDay + (date.getDay() % 8);
 
 
 router.get('/', (req, res) => {
