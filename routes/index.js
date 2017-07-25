@@ -38,7 +38,6 @@ var secs = dt.valueOf() / 1000;
 var hours = secs / 3600;
 var day = ~~(hours / 24);
 
-//
 // const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
 // const day = epochDay + date.getDay();
 
