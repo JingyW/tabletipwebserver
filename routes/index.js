@@ -160,14 +160,14 @@ router.get('/goalhistory', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
-      response.json({
+      response.json([{
         weekOf: results[0].WeekOf,
         training: results[0].Direction + results[0].Name + results[0].Category,
         expectedValue: results[0].ExpectedValue,
         newQty: results[0].NewQty,
         lift: results[0].Lift,
         actualLift: results[0].ActualLift
-      });
+      }]);
     }
   });
 });
