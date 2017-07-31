@@ -25,7 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // import express routes
 app.use('/api', router);
-app.use('/firebase', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
