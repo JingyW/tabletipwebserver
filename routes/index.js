@@ -212,12 +212,11 @@ router.get('/leaderboard', (request, response) => {
 router.post('/pushtoken', (request, response) => {
   // To check if something is a push token
   let isPushToken = Expo.isExponentPushToken(req.body.token.value);
+  console.log('TOKEN IS', req.body.token.value);
   if (isPushToken) {
-    // Create a new Expo SDK client
+    console.log('I WORKED');
     let expo = new Expo();
-    // To send push notifications
     expo.sendPushNotificationsAsync([{
-      // The push token for the app user to whom you want to send the notification
       to: 'ExponentPushToken[' + req.body.token.value + ']',
       sound: 'default',
       body: 'This is a test notification',
