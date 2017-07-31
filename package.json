@@ -11,10 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.2",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.3",
     "express-session": "^1.15.4",
+    "firebase-admin": "^5.1.0",
+    "firebase-functions": "^0.6.0",
     "hbs": "^4.0.1",
     "morgan": "^1.8.2",
     "mysql": "^2.13.0",

@@ -208,4 +208,16 @@ router.get('/leaderboard', (request, response) => {
   });
 });
 
+router.post('/users/push-token', (request, response) => {
+    response.json([{
+    "to": "ExponentPushToken[" + req.body.token.value + "]",
+    "sound": "default",
+    "body": "Hello world!"
+  }, {
+    "to": "ExponentPushToken[" + req.body.token.value + "]",
+    "badge": 1,
+    "body": "You've got mail"
+  }]);
+});
+
 module.exports = router;
