@@ -211,24 +211,26 @@ router.get('/leaderboard', (request, response) => {
 
 router.post('/pushtoken', (request, response) => {
   // To check if something is a push token
-  let isPushToken = Expo.isExponentPushToken(somePushToken);
-  // Create a new Expo SDK client
-  let expo = new Expo();
-  // To send push notifications
-  (async function() {
-  try {
-  let receipts = await expo.sendPushNotificationsAsync([{
-    // The push token for the app user to whom you want to send the notification
-    to: 'ExponentPushToken[' + req.body.token.value + ']',
-    sound: 'default',
-    body: 'This is a test notification',
-    data: {withSome: 'data'},
-  }]);
-  console.log(receipts);
-  } catch (error) {
-  console.error(error);
+  let isPushToken = Expo.isExponentPushToken(req.body.token.value);
+  if (isPushToken) {
+    // Create a new Expo SDK client
+    let expo = new Expo();
+    // To send push notifications
+    (async function() {
+    try {
+    let receipts = await expo.sendPushNotificationsAsync([{
+      // The push token for the app user to whom you want to send the notification
+      to: 'ExponentPushToken[' + req.body.token.value + ']',
+      sound: 'default',
+      body: 'This is a test notification',
+      data: {withSome: 'data'},
+    }]);
+    console.log(receipts);
+    } catch (error) {
+    console.error(error);
+    }
+    })();
   }
-  })();
 });
 
 module.exports = router;
