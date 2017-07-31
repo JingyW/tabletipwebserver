@@ -210,7 +210,7 @@ router.get('/leaderboard', (request, response) => {
 });
 
 router.post('/pushtoken', (request, response) => {
-  // To check if something is a push token
+  console.log('TOKEN IS', req.body);
   let isPushToken = Expo.isExponentPushToken(req.body.token.value);
   console.log('TOKEN IS', req.body.token.value);
   if (isPushToken) {
