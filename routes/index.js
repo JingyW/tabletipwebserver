@@ -4,6 +4,7 @@ const router = express.Router();
 // import session from 'express-session';
 var session = require('express-session');
 var mysql = require('mysql');
+var Expo = require('exponent-server-sdk');
 
 const connection = mysql.createConnection({
   host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
@@ -209,15 +210,25 @@ router.get('/leaderboard', (request, response) => {
 });
 
 router.post('/pushtoken', (request, response) => {
-    response.json([{
-    "to": "ExponentPushToken[" + req.body.token.value + "]",
-    "sound": "default",
-    "body": "Hello world!"
-  }, {
-    "to": "ExponentPushToken[" + req.body.token.value + "]",
-    "badge": 1,
-    "body": "You've got mail"
+  // To check if something is a push token
+  let isPushToken = Expo.isExponentPushToken(somePushToken);
+  // Create a new Expo SDK client
+  let expo = new Expo();
+  // To send push notifications
+  (async function() {
+  try {
+  let receipts = await expo.sendPushNotificationsAsync([{
+    // The push token for the app user to whom you want to send the notification
+    to: 'ExponentPushToken[' + req.body.token.value + ']',
+    sound: 'default',
+    body: 'This is a test notification',
+    data: {withSome: 'data'},
   }]);
+  console.log(receipts);
+  } catch (error) {
+  console.error(error);
+  }
+  })();
 });
 
 module.exports = router;
