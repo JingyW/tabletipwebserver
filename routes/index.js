@@ -208,7 +208,7 @@ router.get('/leaderboard', (request, response) => {
   });
 });
 
-router.post('/users/push-token', (request, response) => {
+router.post('/pushtoken', (request, response) => {
     response.json([{
     "to": "ExponentPushToken[" + req.body.token.value + "]",
     "sound": "default",
