@@ -92,6 +92,20 @@ router.get('/image', (request, response) => {
   });
 });
 
+//Route to get managerId
+router.get('/managerId', (request, response) => {
+  const tableName = locationID + "_employees";
+  const sql = 'SELECT `manager` FROM ?? WHERE `EmployeeID` = ?';
+  connection.query(sql, [tableName, employeeID], (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      response.json({managerId: results[0].manager.toString()});
+    }
+  });
+})
+
 //Route to get the goal target (expected value) and current performance
 router.get('/goalandperformance', (request, response) => {
   const tableName = locationID + "_goals";
@@ -207,28 +221,6 @@ router.get('/leaderboard', (request, response) => {
     }])
     }
   });
-});
-
-router.post('/pushtoken', (request, response) => {
-  console.log('TOKEN IS', req.body);
-  let isPushToken = Expo.isExponentPushToken(req.body.token.value);
-  console.log('TOKEN IS', req.body.token.value);
-  if (isPushToken) {
-    console.log('I WORKED');
-    let expo = new Expo();
-    expo.sendPushNotificationsAsync([{
-      to: 'ExponentPushToken[' + req.body.token.value + ']',
-      sound: 'default',
-      body: 'This is a test notification',
-      data: {withSome: 'data'},
-    }])
-    .then(function(receipts) {
-      console.log(receipts);
-    })
-    .catch(function(error) {
-      console.error(error);
-    })
-  }
 });
 
 module.exports = router;
