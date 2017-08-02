@@ -55,7 +55,7 @@ router.post('/login', (req, res) => {
   // else {
   //   res.json({success: false})
   // }
-  res.json({success: true});
+  res.json({employeeId: employeeID, locationId: locationID});
 });
 
 //Route to get the Employee Name
