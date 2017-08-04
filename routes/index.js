@@ -25,7 +25,7 @@ const connection = mysql.createConnection({
   port: '3306',
   user: user,
   password: password,
-  database: 'dexterMVP'
+  database: database
 });
 
 connection.connect(function(err) {
