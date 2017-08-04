@@ -59,7 +59,7 @@ router.post('/login', (req, res) => {
       res.json({success: false});
     }
     else {
-      if (results) {
+      if (results && results.length > 0) {
         res.json({
           success: true,
           employeeID: results[0].employeeID,
