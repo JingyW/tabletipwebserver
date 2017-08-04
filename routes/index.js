@@ -48,14 +48,22 @@ router.get('/', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  console.log(req.body);   //{ locationId: 'TB5bxM9c', employeeId: '200' }
-  // if (req.body.locationId === locationID && req.body.employeeId.toString() === EmployeeID) {
-  //   res.json({success: true});
-  // }
-  // else {
-  //   res.json({success: false})
-  // }
-  res.json({employeeId: employeeID, locationId: locationID});
+  var usernameInput = req.body.username;
+  var passwordInput = req.body.password;
+  const tableName = 'Users';
+  const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
+  connection.query(sql, [tableName, employeeID], (error, results, fields) => {
+    console.log('in');
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      res.json({
+        employeeID: results[0].employeeID,
+        locationID: results[0].locationID
+      });
+    }
+  });
 });
 
 //Route to get the Employee Name
