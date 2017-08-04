@@ -202,15 +202,11 @@ router.get('/goalhistory', (request, response) => {
     }
     else {
       console.log('RESULT IS FROM GOAL HISTORY', results);
-      // for (var i = 0; i < results.length; i++)
-      response.json([{
-        weekOf: results[0].WeekOf,
-        training: results[0].Direction + ' ' + results[0].Name + ' ' + results[0].Category,
-        expectedValue: results[0].ExpectedValue,
-        newQty: results[0].NewQty,
-        lift: results[0].Lift,
-        actualLift: results[0].ActualLift
-      }]);
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        finalArr.push(results[i]);
+      }
+      response.json({result: finalArr});
     }
   });
 });
