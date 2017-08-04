@@ -37,17 +37,12 @@ app.post('/pushtoken', (req, res) => {
    * @type {DATABASE TRIGGER}
   */
  exports.addMessages = functions.database
-   // listen for new users in ANY topic
    .ref('/Messages/Managers/{managerId}/{serverId}/{message}')
    .onCreate((event) => {
-     // get all of the children of the topic in question
-     //const myTopic = event.params.changedTopic;
-     console.log('GETTING IN HEREEEE', event);
      const managerId = event.params.managerId;
      const serverId = event.params.serverId;
      dbRootRef.child(`/Users/${serverId}/pushtoken`).once('value')
      .then((pushToken) => {
-       console.log('HELLOOOOOOOO', pushToken, pushToken.val());
        if (pushToken) {
          sendPush(pushToken.val());
        }
