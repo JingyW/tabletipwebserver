@@ -201,6 +201,8 @@ router.get('/goalhistory', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
+      console.log('RESULT IS FROM GOAL HISTORY', results);
+      // for (var i = 0; i < results.length; i++)
       response.json([{
         weekOf: results[0].WeekOf,
         training: results[0].Direction + ' ' + results[0].Name + ' ' + results[0].Category,
