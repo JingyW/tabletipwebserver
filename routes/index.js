@@ -202,11 +202,22 @@ router.get('/goalhistory', (request, response) => {
     }
     else {
       console.log('RESULT IS FROM GOAL HISTORY', results);
-      // var finalArr = [];
-      // for (var i = 0; i < results.length; i++) {
-      //   finalArr.push(results[i]);
-      // }
-      response.json({result: results});
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        var obj = {
+          weekOf: results[i].WeekOf,
+          newQuantity: results[i].NewQty,
+          expectedValue: results[i].ExpectedValue,
+          direction: results[i].Direction,
+          name: results[i].Name,
+          categories: results[i].Category,
+          lift: results[i].Lift,
+          actualLift: results[i].ActualLift
+        }
+        finalArr.push(obj);
+      }
+      console.log('FINAL ARRAY', finalArr);
+      response.json({result: finalArr});
     }
   });
 });
