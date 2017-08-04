@@ -202,11 +202,11 @@ router.get('/goalhistory', (request, response) => {
     }
     else {
       console.log('RESULT IS FROM GOAL HISTORY', results);
-      var finalArr = [];
-      for (var i = 0; i < results.length; i++) {
-        finalArr.push(results[i]);
-      }
-      response.json({result: finalArr});
+      // var finalArr = [];
+      // for (var i = 0; i < results.length; i++) {
+      //   finalArr.push(results[i]);
+      // }
+      response.json({result: results});
     }
   });
 });
@@ -224,6 +224,7 @@ router.get('/leaderboard', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
+      console.log('RESULT IS FROM LEADERBOARD', results);
       // var finalArr = [];
       // for (var i = 0; i < results.length; i++) {
       //   finalArr.push(results[i]);
