@@ -238,13 +238,23 @@ router.get('/leaderboard', (request, response) => {
       console.log('RESULT IS FROM LEADERBOARD', results);
       var finalArr = [];
       for (var i = 0; i < results.length; i++) {
-        var obj = {
-          employeeId: results[i].EmployeeID,
-          picture: results[i].Picture.toString(),
-          name: results[i].Name,
-          score: results[i].Score,
-          lift: results[i].Lift,
-          actualLift: results[i].ActualLift
+        if (results[i].Picture === null) {
+          var obj = {
+            employeeId: results[i].EmployeeID,
+            name: results[i].Name,
+            score: results[i].Score,
+            lift: results[i].Lift,
+            actualLift: results[i].ActualLift
+          }
+        } else {
+          var obj = {
+            employeeId: results[i].EmployeeID,
+            picture: results[i].Picture.toString(),
+            name: results[i].Name,
+            score: results[i].Score,
+            lift: results[i].Lift,
+            actualLift: results[i].ActualLift
+          }
         }
         finalArr.push(obj);
       }
