@@ -37,7 +37,7 @@ var secs = dt.valueOf() / 1000;
 var hours = secs / 3600;
 var day = ~~(hours / 24);
 
-//Route to login
+//Route to login into app
 router.post('/login', (req, res) => {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
