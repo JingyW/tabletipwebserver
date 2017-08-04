@@ -231,7 +231,7 @@ router.get('/leaderboard', (request, response) => {
         picture: results[0].Picture.toString(),
         lift: results[0].Lift,
         actualLift: results[0].ActualLift
-    }])
+    }]);
     }
   });
 });
