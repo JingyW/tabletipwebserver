@@ -11,13 +11,12 @@ var port = process.env.PORT;
 var user = process.env.USER;
 var password = process.env.PASSWORD;
 var database = process.env.DATABASE;
-//console.log('aosfjiwejfjoiwe', host, port, user, password, database);
 const connection = mysql.createConnection({
-  host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
-  port: '3306',
-  user: 'ankurmgoyal',
-  password: 'tab1et!p',
-  database: 'dexterMVP'
+  host: host,
+  port: port,
+  user: user,
+  password: password,
+  database: database
 });
 
 connection.connect(function(err) {
@@ -26,7 +25,6 @@ connection.connect(function(err) {
     return;
   }
   console.log('connected as id ' + connection.threadId);
-  console.log('aosfjiwejfjoiwe', host, port, user, password, database);
 });
 
 let locationID = '';
@@ -57,7 +55,6 @@ router.post('/login', (req, res) => {
       res.json({success: false});
     }
     else {
-      console.log('RESULLLTSSSS', results);
       if (results && results.length > 0) {
         locationID = results[0].locationID;
         employeeID = results[0].employeeID;
