@@ -59,6 +59,8 @@ router.post('/login', (req, res) => {
     else {
       console.log('RESULLLTSSSS', results);
       if (results && results.length > 0) {
+        locationID = results[0].locationID;
+        employeeID = results[0].employeeID;
         res.json({
           success: true,
           employeeID: results[0].employeeID,
