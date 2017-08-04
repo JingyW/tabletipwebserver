@@ -52,7 +52,7 @@ router.post('/login', (req, res) => {
   var passwordInput = req.body.password;
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
-  connection.query(sql, [tableName, employeeID], (error, results, fields) => {
+  connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
     console.log('in');
     if (error) {
       console.log('Error: ' + error);
