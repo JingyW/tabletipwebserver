@@ -224,11 +224,11 @@ router.get('/leaderboard', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
-      var finalArr = [];
-      for (var i = 0; i < results.length; i++) {
-        finalArr.push(results[i]);
-      }
-      response.json({result: finalArr});
+      // var finalArr = [];
+      // for (var i = 0; i < results.length; i++) {
+      //   finalArr.push(results[i]);
+      // }
+      response.json({result: results});
     }
   });
 });
