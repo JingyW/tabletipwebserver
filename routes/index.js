@@ -1,7 +1,5 @@
-// import express from 'express';
 var express = require('express');
 const router = express.Router();
-// import session from 'express-session';
 var session = require('express-session');
 var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
@@ -74,8 +72,6 @@ router.post('/login', (req, res) => {
 //Route to get the Employee Name
 router.get('/name', (req, res) => {
   const tableName = locationID + '_employees';
-  console.log('name', tableName);
-  console.log('EmployeeID', employeeID);
   const sql = 'SELECT `Name` FROM ?? WHERE `EmployeeID` = ?'
   connection.query(sql, [tableName, employeeID], (error, results, fields) => {
     console.log('in');
@@ -198,7 +194,6 @@ router.get('/goalhistory', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
-      console.log('RESULT IS FROM GOAL HISTORY', results);
       var finalArr = [];
       for (var i = 0; i < results.length; i++) {
         var obj = {
@@ -213,7 +208,6 @@ router.get('/goalhistory', (request, response) => {
         }
         finalArr.push(obj);
       }
-      console.log('FINAL ARRAY', finalArr);
       response.json({result: finalArr});
     }
   });
@@ -233,7 +227,6 @@ router.get('/leaderboard', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
-      console.log('RESULT IS FROM LEADERBOARD', results);
       var finalArr = [];
       for (var i = 0; i < results.length; i++) {
         if (results[i].Picture === null) {
