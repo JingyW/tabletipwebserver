@@ -224,14 +224,11 @@ router.get('/leaderboard', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
-      console.log('RESULT IS FROM LEADERBOARD', results);
-      response.json([{
-        name: results[0].Name,
-        score: results[0].Score,
-        picture: results[0].Picture.toString(),
-        lift: results[0].Lift,
-        actualLift: results[0].ActualLift
-    }]);
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        finalArr.push(results[i]);
+      }
+      response.json({result: finalArr});
     }
   });
 });
