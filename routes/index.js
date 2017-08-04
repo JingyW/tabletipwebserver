@@ -14,7 +14,7 @@ var database = process.env.DATABASE;
 
 const connection = mysql.createConnection({
   host: host,
-  port: '3306',
+  port: port.toString(),
   user: user,
   password: password,
   database: database
