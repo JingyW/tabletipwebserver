@@ -23,7 +23,7 @@ var database = process.env.DATABASE;
 const connection = mysql.createConnection({
   host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
   port: '3306',
-  user: 'ankurmgoyal',
+  user: user,
   password: password,
   database: 'dexterMVP'
 });
