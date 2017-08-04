@@ -47,6 +47,7 @@ router.get('/', (req, res) => {
   res.send('Testing');
 });
 
+//Route to login
 router.post('/login', (req, res) => {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
