@@ -59,11 +59,15 @@ router.post('/login', (req, res) => {
       res.json({success: false});
     }
     else {
-      res.json({
-        success: true,
-        employeeID: results[0].employeeID,
-        locationID: results[0].locationID
-      });
+      if (results) {
+        res.json({
+          success: true,
+          employeeID: results[0].employeeID,
+          locationID: results[0].locationID
+        });
+      } else {
+        res.json({success: false});
+      }
     }
   });
 });
