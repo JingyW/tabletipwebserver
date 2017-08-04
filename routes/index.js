@@ -49,6 +49,7 @@ router.post('/login', (req, res) => {
       res.json({success: false});
     }
     else {
+      console.log('RESULLLTSSSS', results);
       if (results && results.length > 0) {
         res.json({
           success: true,
