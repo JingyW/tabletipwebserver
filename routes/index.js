@@ -236,11 +236,19 @@ router.get('/leaderboard', (request, response) => {
     }
     else {
       console.log('RESULT IS FROM LEADERBOARD', results);
-      // var finalArr = [];
-      // for (var i = 0; i < results.length; i++) {
-      //   finalArr.push(results[i]);
-      // }
-      response.json({result: results});
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        var obj = {
+          employeeId: results[i].EmployeeID,
+          picture: results[i].Picture.toString(),
+          name: results[i].Name,
+          score: results[i].Score,
+          lift: results[i].Lift,
+          actualLift: results[i].ActualLift
+        }
+        finalArr.push(obj);
+      }
+      response.json({result: finalArr});
     }
   });
 });
