@@ -7,11 +7,11 @@ var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
 
 const connection = mysql.createConnection({
-  host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
-  port: '3306',
-  user: 'ankurmgoyal',
-  password: 'tab1et!p',
-  database: 'dexterMVP'
+  host: PROCESS.ENV.HOST,
+  port: PROCESS.ENV.PORT,
+  user: PROCESS.ENV.USER,
+  password: PROCESS.ENV.PASSWORD,
+  database: PROCESS.ENV.DATABASE
 });
 
 connection.connect(function(err) {
@@ -22,10 +22,8 @@ connection.connect(function(err) {
   console.log('connected as id ' + connection.threadId);
 });
 
-// let locationID = '';
-// let employeeID ='';
-let locationID = 'TB5bxM9c';
-let employeeID = '200';
+let locationID = '';
+let employeeID ='';
 const date = new Date();
 
 
@@ -38,14 +36,6 @@ var dt = new Date(yy, mm, dd);
 var secs = dt.valueOf() / 1000;
 var hours = secs / 3600;
 var day = ~~(hours / 24);
-
-// const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
-// const day = epochDay + date.getDay();
-
-
-router.get('/', (req, res) => {
-  res.send('Testing');
-});
 
 //Route to login
 router.post('/login', (req, res) => {
@@ -77,9 +67,7 @@ router.get('/name', (req, res) => {
   const tableName = locationID + '_employees';
   console.log('name', tableName);
   console.log('EmployeeID', employeeID);
-  //const sql = "SELECT Name FROM " + connection.escape(tableName) + " WHERE EmployeeID = " + connection.escape(employeeID);
   const sql = 'SELECT `Name` FROM ?? WHERE `EmployeeID` = ?'
-  //const sql = "SELECT Name FROM " + tableName + " WHERE EmployeeID = " + employeeID;
   connection.query(sql, [tableName, employeeID], (error, results, fields) => {
     console.log('in');
     if (error) {
@@ -94,7 +82,6 @@ router.get('/name', (req, res) => {
 //Route to get the Employee Image
 router.get('/image', (request, response) => {
   const tableName = locationID + "_employees";
-  //const sql = "SELECT Picture FROM " + tableName + " WHERE EmployeeID = " + employeeID;
   const sql = 'SELECT `Picture` FROM ?? WHERE `EmployeeID` = ?';
   connection.query(sql, [tableName, employeeID], (error, results, fields) => {
     if (error) {
@@ -192,6 +179,7 @@ router.get('/tips', (request, response) => {
   });
 });
 
+//Route to get goal history
 router.get('/goalhistory', (request, response) => {
   const tableName = locationID + "_goals";
   const subQuery = "(SELECT * FROM " + tableName + " t3 LEFT JOIN Skill_Info t4 USING (ID))";
@@ -222,6 +210,7 @@ router.get('/goalhistory', (request, response) => {
   });
 });
 
+//Route to get leaderboard
 router.get('/leaderboard', (request, response) => {
   const tableName = locationID + "_goals";
   const empTable = locationID + "_employees";
