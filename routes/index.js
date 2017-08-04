@@ -6,6 +6,12 @@ var session = require('express-session');
 var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
 
+var host = process.env.HOST;
+var port = process.env.PORT;
+var user = process.env.USER;
+var password = process.env.PASSWORD;
+var database = process.env.DATABASE;
+//console.log('aosfjiwejfjoiwe', host, port, user, password, database);
 const connection = mysql.createConnection({
   host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
   port: '3306',
@@ -20,6 +26,7 @@ connection.connect(function(err) {
     return;
   }
   console.log('connected as id ' + connection.threadId);
+  console.log('aosfjiwejfjoiwe', host, port, user, password, database);
 });
 
 let locationID = '';
