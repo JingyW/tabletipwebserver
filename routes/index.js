@@ -11,12 +11,13 @@ var port = process.env.PORT;
 var user = process.env.USER;
 var password = process.env.PASSWORD;
 var database = process.env.DATABASE;
+
 const connection = mysql.createConnection({
-  host: host,
-  port: port,
-  user: user,
-  password: password,
-  database: database
+  host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
+  port: '3306',
+  user: 'ankurmgoyal',
+  password: 'tab1et!p',
+  database: 'dexterMVP'
 });
 
 connection.connect(function(err) {
