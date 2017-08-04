@@ -53,12 +53,13 @@ router.post('/login', (req, res) => {
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
-    console.log('in');
     if (error) {
       console.log('Error: ' + error);
+      res.json({success: false});
     }
     else {
       res.json({
+        success: true,
         employeeID: results[0].employeeID,
         locationID: results[0].locationID
       });
