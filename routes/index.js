@@ -224,6 +224,7 @@ router.get('/leaderboard', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
+      console.log('RESULT IS FROM LEADERBOARD', results);
       response.json([{
         name: results[0].Name,
         score: results[0].Score,
