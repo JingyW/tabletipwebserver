@@ -7,11 +7,11 @@ var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
 
 const connection = mysql.createConnection({
-  host: PROCESS.ENV.HOST,
-  port: PROCESS.ENV.PORT,
-  user: PROCESS.ENV.USER,
-  password: PROCESS.ENV.PASSWORD,
-  database: PROCESS.ENV.DATABASE
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 });
 
 connection.connect(function(err) {
