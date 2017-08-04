@@ -12,11 +12,19 @@ var user = process.env.USER;
 var password = process.env.PASSWORD;
 var database = process.env.DATABASE;
 
+// const connection = mysql.createConnection({
+//   host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
+//   port: '3306',
+//   user: 'ankurmgoyal',
+//   password: 'tab1et!p',
+//   database: 'dexterMVP'
+// });
+
 const connection = mysql.createConnection({
   host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
   port: '3306',
   user: 'ankurmgoyal',
-  password: 'tab1et!p',
+  password: password,
   database: 'dexterMVP'
 });
 
