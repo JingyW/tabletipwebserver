@@ -7,11 +7,11 @@ var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
 
 const connection = mysql.createConnection({
-  host: process.env.HOST,
-  port: process.env.PORT,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
+  port: '3306',
+  user: 'ankurmgoyal',
+  password: 'tab1et!p',
+  database: 'dexterMVP'
 });
 
 connection.connect(function(err) {
@@ -39,6 +39,7 @@ var day = ~~(hours / 24);
 
 //Route to login into app
 router.post('/login', (req, res) => {
+  console.log('REQBODY', req.body)
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   const tableName = 'Users';
