@@ -14,7 +14,7 @@ var database = process.env.DATABASE;
 
 const connection = mysql.createConnection({
   host: host,
-  port: port,
+  port: '3306',
   user: user,
   password: password,
   database: database
@@ -26,6 +26,10 @@ connection.connect(function(err) {
     return;
   }
   console.log('connected as id ' + connection.threadId);
+  console.log(port);
+  console.log("Type",typeof port);
+  console.log(port.toString())
+  console.log("should be string", typeof port);
 });
 
 let locationID = '';
