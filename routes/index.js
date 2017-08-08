@@ -180,8 +180,8 @@ router.get('/tips', (request, response) => {
     else {
       console.log(results)
       response.json({
-        tipLift: results[1].Lift,
-        tipActualLift: results[1].ActualLift
+        tipLift: results[0].Lift,
+        tipActualLift: results[0].ActualLift
       });
     }
   });
