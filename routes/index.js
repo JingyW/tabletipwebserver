@@ -3,6 +3,7 @@ const router = express.Router();
 var session = require('express-session');
 var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
+var crypto = require('crypto');
 
 var host = process.env.HOST;
 var port = process.env.PORT_SQL;
@@ -176,9 +177,10 @@ router.get('/tips', (request, response) => {
       console.log('Error: ' + error);
     }
     else {
+      console.log(results)
       response.json({
-        tipLift: results[0].Lift,
-        tipActualLift: results[0].ActualLift
+        tipLift: results[1].Lift,
+        tipActualLift: results[1].ActualLift
       });
     }
   });
