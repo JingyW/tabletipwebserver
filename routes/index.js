@@ -3,7 +3,7 @@ const router = express.Router();
 var session = require('express-session');
 var mysql = require('mysql');
 var Expo = require('exponent-server-sdk');
-var crypto = require('crypto');
+var CryptoJS = require("crypto-js");
 
 var host = process.env.HOST;
 var port = process.env.PORT_SQL;
@@ -47,6 +47,13 @@ router.post('/login', (req, res) => {
   console.log('REQBODY', req.body)
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
+  var salt = CryptoJS.lib.WordArray.random(128/8);
+  var key128Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 128/32 });
+  var key256Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 256/32 });
+  var key512Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 512/32 });
+  var key512Bits1000Iterations = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 512/32, iterations: 1000 });
+  var ciphertext = CryptoJS.PBKDF2.encrypt(passwordInput, key512Bits1000Iterations);
+  console.log('PASS', ciphertext);
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
