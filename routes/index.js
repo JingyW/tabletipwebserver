@@ -49,16 +49,8 @@ router.post('/login', (req, res) => {
   console.log('REQBODY', req.body)
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
-  var salt = CryptoJS.lib.WordArray.random(128/8);
-  console.log(typeof salt, salt)
-  var salt2 = 'salt';
-  // var key128Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 128/32 });
-  // var key256Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 256/32 });
-  // var key512Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 512/32 });
-  //var key512Bits1000Iterations = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
-  //var ciphertext = CryptoJS.PBKDF2.encrypt(passwordInput, 'secret key 123');
-  var userHash = CryptoJS.PBKDF2('haha', salt2, { keySize: 512/32, iterations: 1000 });
-  console.log('PASS', userHash, userHash.toString());
+  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var userHash = CryptoJS.PBKDF2('haha', salt, { keySize: 512/32, iterations: 1000 });
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
@@ -81,6 +73,12 @@ router.post('/login', (req, res) => {
     }
   });
 });
+
+router.post('/forgotpassword', (req, res) => {
+  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var userHash = CryptoJS.PBKDF2('haha', salt, { keySize: 512/32, iterations: 1000 });
+  res.json({success: true});
+})
 
 //Route to get the Employee Name
 router.get('/name', (req, res) => {
