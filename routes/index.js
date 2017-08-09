@@ -52,8 +52,9 @@ router.post('/login', (req, res) => {
   // var key256Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 256/32 });
   // var key512Bits = CryptoJS.PBKDF2("Secret Passphrase", salt, { keySize: 512/32 });
   //var key512Bits1000Iterations = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
-  var ciphertext = CryptoJS.PBKDF2.encrypt(passwordInput, 'secret key 123');
-  console.log('PASS', key512Bits1000Iterations);
+  //var ciphertext = CryptoJS.PBKDF2.encrypt(passwordInput, 'secret key 123');
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+  console.log('PASS', userHash, userHash.toString());
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
