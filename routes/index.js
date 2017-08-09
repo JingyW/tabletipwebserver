@@ -50,7 +50,7 @@ router.post('/login', (req, res) => {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
-  var userHash = CryptoJS.PBKDF2('haha', salt, { keySize: 512/32, iterations: 1000 });
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
@@ -74,9 +74,10 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.post('/forgotpassword', (req, res) => {
+router.post('/firstLogin', (req, res) => {
+  var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
-  var userHash = CryptoJS.PBKDF2('haha', salt, { keySize: 512/32, iterations: 1000 });
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
   res.json({success: true});
 })
 
