@@ -52,28 +52,29 @@ router.post('/login', (req, res) => {
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
-  UPDATE Users SET
-password = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d'
-WHERE username = 'goelv';
   const tableName = 'Users';
-  const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
+  const sql = 'SELECT locationID, employeeID, firstTime FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
     if (error) {
       console.log('Error: ' + error);
       res.json({success: false});
     }
     else {
-      if (results && results.length > 0) {
-        locationID = results[0].locationID;
-        employeeID = results[0].employeeID;
-        res.json({
-          success: true,
-          employeeID: results[0].employeeID,
-          locationID: results[0].locationID
-        });
-      } else {
-        res.json({success: false});
-      }
+			if (results[0].firstTime) {
+				res.json({firstTimeLogin:true});
+			} else {
+				if (results && results.length > 0) {
+	        locationID = results[0].locationID;
+	        employeeID = results[0].employeeID;
+	        res.json({
+	          success: true,
+	          employeeID: results[0].employeeID,
+	          locationID: results[0].locationID
+	        });
+	      } else {
+	        res.json({success: false});
+	      }
+			}
     }
   });
 });
@@ -82,7 +83,25 @@ router.post('/firstLogin', (req, res) => {
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
-  res.json({success: true});
+	const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
+	const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
+	const updatePass = 'UPDATE Users SET password = ? WHERE username = ?';
+	connection.query(updatefirstTime,[false, 'goelv'], (error, result, fields) => {
+		if (error) {
+			console.log('Error: ' + error);
+			res.json({success: false});
+		} else {
+			connection.query(updatePass,[defaultPass,'goelv'], (error, secRes, fields) => {
+				if (error) {
+					console.log('Error: ' + error);
+					res.json({success: false});
+				} else {
+					res.json({success: true});
+				}
+			})
+
+		}
+	})
 })
 
 //Route to get the Employee Name
