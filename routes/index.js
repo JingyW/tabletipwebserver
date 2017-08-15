@@ -90,15 +90,15 @@ router.post('/firstLogin', (req, res) => {
 	console.log("inside firstlogin")
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
-  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
 	console.log(userHash)
 	// const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
 	//const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
 	// connection.query('UPDATE users SET ? WHERE UserID = :UserID',
 	//                      {UserID: userId, Name: name})
-	const updatePass = "UPDATE `Users` SET `firstTime` = 'true' WHERE `username` = 'goelv'";
+	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = 'goelv'";
 //'UPDATE users SET foo = ?, bar = ?, baz = ? WHERE id = ?', ['a', 'b', 'c', userId], function (error, results, fields)
-	connection.query(updatePass,(error, result, fields) => {
+	connection.query(updatePass,['false', userHash],(error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
