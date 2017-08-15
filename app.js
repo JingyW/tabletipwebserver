@@ -1,11 +1,3 @@
-// import express from 'express';
-// import path from 'path';
-// import logger from 'morgan';
-// import cookieParser from 'cookie-parser';
-// import bodyParser from 'body-parser';
-// var hbs = require('hbs');
-// import session from 'express-session';
-// import router from './routes/index';
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');

@@ -1,16 +1,22 @@
-// import express from 'express';
 var express = require('express');
 const router = express.Router();
-// import session from 'express-session';
 var session = require('express-session');
 var mysql = require('mysql');
+var Expo = require('exponent-server-sdk');
+var CryptoJS = require("crypto-js");
+
+var host = process.env.HOST;
+var port = process.env.PORT_SQL;
+var user = process.env.USER;
+var password = process.env.PASSWORD;
+var database = process.env.DATABASE;
 
 const connection = mysql.createConnection({
-  host: 'ankurmgoyal.ccfuvi1hkijt.us-west-2.rds.amazonaws.com',
-  port: '3306',
-  user: 'ankurmgoyal',
-  password: 'tab1et!p',
-  database: 'dexterMVP'
+  host: host,
+  port: port,
+  user: user,
+  password: password,
+  database: database
 });
 
 connection.connect(function(err) {
@@ -21,35 +27,68 @@ connection.connect(function(err) {
   console.log('connected as id ' + connection.threadId);
 });
 
-// let locationID = '';
-// let employeeID ='';
-let locationID = 'TB5bxM9c';
-let employeeID = '200';
+let locationID = '';
+let employeeID ='';
 const date = new Date();
-const epochDay = Math.floor(date / 8.64e7);  //today's date since epochDay in days
-const day = epochDay + (8 % date.getDay());
 
 
-router.get('/', (req, res) => {
-  res.send('Testing');
-});
+var parts = new Date().toISOString().substring(0, 10).split('-');
+var dd = parts[2];
+var mm = parts[1] - 1;
+var yy = Number(parts[0]);
+if (yy < 1000) { yy = 2000 + yy; }
+var dt = new Date(yy, mm, dd);
+var secs = dt.valueOf() / 1000;
+var hours = secs / 3600;
+var day = ~~(hours / 24);
+//7dc5efd3fbec24b5055b27cfe0c0eadfde9f7d6d8bbe9888cc89e0aafe1e88b4125e262e84d3584bbddf4185911fdc076e4d09ffb44f152c995634539a1d23b0
 
+
+//Route to login into app
+//Ankur comment
 router.post('/login', (req, res) => {
-  console.log(req.body);
-  // const reqBody = JSON.parse(req.body);
-  // console.log(reqBody);
-  // console.log(employeeID+locationID);
-  res.json({success: true});
+  console.log('REQBODY', req.body)
+  var usernameInput = req.body.username;
+  var passwordInput = req.body.password;
+  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+  UPDATE Users SET
+password = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d'
+WHERE username = 'goelv';
+  const tableName = 'Users';
+  const sql = 'SELECT locationID, employeeID FROM ?? WHERE username = ?';
+  connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+      res.json({success: false});
+    }
+    else {
+      if (results && results.length > 0) {
+        locationID = results[0].locationID;
+        employeeID = results[0].employeeID;
+        res.json({
+          success: true,
+          employeeID: results[0].employeeID,
+          locationID: results[0].locationID
+        });
+      } else {
+        res.json({success: false});
+      }
+    }
+  });
 });
+
+router.post('/firstLogin', (req, res) => {
+  var passwordInput = req.body.password;
+  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+  res.json({success: true});
+})
 
 //Route to get the Employee Name
 router.get('/name', (req, res) => {
   const tableName = locationID + '_employees';
-  console.log('name', tableName);
-  console.log('EmployeeID', employeeID);
-  //const sql = "SELECT Name FROM " + connection.escape(tableName) + " WHERE EmployeeID = " + connection.escape(employeeID);
   const sql = 'SELECT `Name` FROM ?? WHERE `EmployeeID` = ?'
-  //const sql = "SELECT Name FROM " + tableName + " WHERE EmployeeID = " + employeeID;
   connection.query(sql, [tableName, employeeID], (error, results, fields) => {
     console.log('in');
     if (error) {
@@ -64,7 +103,6 @@ router.get('/name', (req, res) => {
 //Route to get the Employee Image
 router.get('/image', (request, response) => {
   const tableName = locationID + "_employees";
-  //const sql = "SELECT Picture FROM " + tableName + " WHERE EmployeeID = " + employeeID;
   const sql = 'SELECT `Picture` FROM ?? WHERE `EmployeeID` = ?';
   connection.query(sql, [tableName, employeeID], (error, results, fields) => {
     if (error) {
@@ -75,6 +113,20 @@ router.get('/image', (request, response) => {
     }
   });
 });
+
+//Route to get managerId
+router.get('/managerId', (request, response) => {
+  const tableName = locationID + "_employees";
+  const sql = 'SELECT `manager` FROM ?? WHERE `EmployeeID` = ?';
+  connection.query(sql, [tableName, employeeID], (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      response.json({managerId: results[0].manager.toString()});
+    }
+  });
+})
 
 //Route to get the goal target (expected value) and current performance
 router.get('/goalandperformance', (request, response) => {
@@ -95,7 +147,8 @@ router.get('/goalandperformance', (request, response) => {
     else {
       response.json({
         expectedValue: results[0].ExpectedValue,
-        newQuantity: results[0].NewQty
+        newQuantity: results[0].NewQty,
+        day: day
       });
     }
   });
@@ -147,5 +200,74 @@ router.get('/tips', (request, response) => {
   });
 });
 
-// export default router;
+//Route to get goal history
+router.get('/goalhistory', (request, response) => {
+  const tableName = locationID + "_goals";
+  const subQuery = "(SELECT * FROM " + tableName + " t3 LEFT JOIN Skill_Info t4 USING (ID))";
+  const sql = "SELECT * FROM " + subQuery + " t1 WHERE EmployeeID = ? ORDER BY WeekOf DESC";
+  connection.query(sql, [employeeID], (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        var obj = {
+          weekOf: results[i].WeekOf,
+          newQuantity: results[i].NewQty,
+          expectedValue: results[i].ExpectedValue,
+          direction: results[i].Direction,
+          name: results[i].Name,
+          categories: results[i].Category,
+          lift: results[i].Lift,
+          actualLift: results[i].ActualLift
+        }
+        finalArr.push(obj);
+      }
+      response.json({result: finalArr});
+    }
+  });
+});
+
+//Route to get leaderboard
+router.get('/leaderboard', (request, response) => {
+  const tableName = locationID + "_goals";
+  const empTable = locationID + "_employees";
+  const subQuery = "(SELECT * FROM " + tableName + " t3 LEFT JOIN " + empTable + " t4 USING (EmployeeID) WHERE WeekOf < " + connection.escape(day) +") ";
+  const subQuery2 = "(SELECT * FROM " + tableName + " WHERE WeekOf < " + connection.escape(day) +") ";
+
+  const sql = "SELECT t1.EmployeeID, t1.Picture, t1.Name, t1.Lift, t1.ActualLift, (t1.NewQty/ t1.ExpectedValue) AS Score FROM " + subQuery + " t1 LEFT OUTER JOIN "
+  + subQuery2 + " t2 ON (t1.EmployeeID = t2.EmployeeID AND t1.WeekOf < t2.WeekOf) WHERE t2.EmployeeID IS NULL ORDER BY Score DESC"
+  connection.query(sql, (error, results, fields) => {
+    if (error) {
+      console.log('Error: ' + error);
+    }
+    else {
+      var finalArr = [];
+      for (var i = 0; i < results.length; i++) {
+        if (results[i].Picture === null) {
+          var obj = {
+            employeeId: results[i].EmployeeID,
+            name: results[i].Name,
+            score: results[i].Score,
+            lift: results[i].Lift,
+            actualLift: results[i].ActualLift
+          }
+        } else {
+          var obj = {
+            employeeId: results[i].EmployeeID,
+            picture: results[i].Picture.toString(),
+            name: results[i].Name,
+            score: results[i].Score,
+            lift: results[i].Lift,
+            actualLift: results[i].ActualLift
+          }
+        }
+        finalArr.push(obj);
+      }
+      response.json({result: finalArr});
+    }
+  });
+});
+
 module.exports = router;
