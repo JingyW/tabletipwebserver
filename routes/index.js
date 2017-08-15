@@ -66,17 +66,20 @@ router.post('/login', (req, res) => {
         employeeID = results[0].employeeID;
 				res.json({firstTimeLogin:true});
 			} else {
-				if (results && results.length > 0) {
-	        locationID = results[0].locationID;
-	        employeeID = results[0].employeeID;
-	        res.json({
-	          success: true,
-	          employeeID: results[0].employeeID,
-	          locationID: results[0].locationID
-	        });
-	      } else {
-	        res.json({success: false});
-	      }
+				locationID = results[0].locationID;
+        employeeID = results[0].employeeID;
+				res.json({firstTimeLogin:true});
+				// if (results && results.length > 0) {
+	      //   locationID = results[0].locationID;
+	      //   employeeID = results[0].employeeID;
+	      //   res.json({
+	      //     success: true,
+	      //     employeeID: results[0].employeeID,
+	      //     locationID: results[0].locationID
+	      //   });
+	      // } else {
+	      //   res.json({success: false});
+	      // }
 			}
     }
 		// else {
