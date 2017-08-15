@@ -61,7 +61,7 @@ router.post('/login', (req, res) => {
     }
     // else if (userHash === results[0].password){
 		else {
-			if (results[0].firstTime) {
+			if (results[0].firstTime !== 'false') {
         locationID = results[0].locationID;
         employeeID = results[0].employeeID;
 				res.json({firstTimeLogin:true});
@@ -96,7 +96,7 @@ router.post('/firstLogin', (req, res) => {
 	//const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
 	// connection.query('UPDATE users SET ? WHERE UserID = :UserID',
 	//                      {UserID: userId, Name: name})
-	const updatePass = "UPDATE `Users` SET `firstTime` = 'false' WHERE `username` = 'goelv'";
+	const updatePass = "UPDATE `Users` SET `firstTime` = 'true' WHERE `username` = 'goelv'";
 //'UPDATE users SET foo = ?, bar = ?, baz = ? WHERE id = ?', ['a', 'b', 'c', userId], function (error, results, fields)
 	connection.query(updatePass,(error, result, fields) => {
 		if (error) {
