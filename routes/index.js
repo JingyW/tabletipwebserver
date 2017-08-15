@@ -59,7 +59,7 @@ router.post('/login', (req, res) => {
       console.log('Error: ' + error);
       res.json({success: false});
     }
-    else {
+    else if (userHash === results[0].password){
 			if (results[0].firstTime) {
 				res.json({firstTimeLogin:true});
 			} else {
@@ -75,7 +75,10 @@ router.post('/login', (req, res) => {
 	        res.json({success: false});
 	      }
 			}
-    }
+    } else {
+			console.log("wrong password");
+			res.json({success:false})
+		}
   });
 });
 
@@ -83,23 +86,17 @@ router.post('/firstLogin', (req, res) => {
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
-	const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
-	const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
-	const updatePass = 'UPDATE Users SET password = ? WHERE username = ?';
-	connection.query(updatefirstTime,[false, 'goelv'], (error, result, fields) => {
+	// const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
+	//const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
+	const updatePass = 'UPDATE Users SET password = ?, firstTime = ? WHERE username = ?';
+	console.log(updatePass)
+	connection.query(updatePass,[userHash, false, 'goelv'], (error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
 		} else {
-			connection.query(updatePass,[defaultPass,'goelv'], (error, secRes, fields) => {
-				if (error) {
-					console.log('Error: ' + error);
-					res.json({success: false});
-				} else {
-					res.json({success: true});
-				}
-			})
-
+			console.log('json')
+			res.json({success: true});
 		}
 	})
 })
