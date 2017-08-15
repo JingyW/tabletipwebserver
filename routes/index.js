@@ -91,10 +91,13 @@ router.post('/firstLogin', (req, res) => {
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+	console.log(userHash)
 	// const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
 	//const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
-	const updatePass = 'UPDATE Users SET password = ?, firstTime = ? WHERE username = ?';
-	connection.query(updatePass,[userHash, 'false', 'goelv'], (error, result, fields) => {
+	// connection.query('UPDATE users SET ? WHERE UserID = :UserID',
+	//                      {UserID: userId, Name: name})
+	const updatePass = 'UPDATE Users SET ? WHERE username = goelv';
+	connection.query(updatePass,{password:userHash,firstTime:'false'}, (error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
