@@ -51,9 +51,9 @@ router.post('/login', (req, res) => {
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
-  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 });
+  var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
   const tableName = 'Users';
-  const sql = 'SELECT locationID, employeeID, firstTime FROM ?? WHERE username = ?';
+  const sql = 'SELECT locationID, employeeID, firstTime, password FROM ?? WHERE username = ?';
   connection.query(sql, [tableName, usernameInput], (error, results, fields) => {
     if (error) {
       console.log('Error: ' + error);
@@ -61,47 +61,41 @@ router.post('/login', (req, res) => {
     }
     // else if (userHash === results[0].password){
 		else {
-			if (results[0].firstTime !== 'false') {
-        locationID = results[0].locationID;
-        employeeID = results[0].employeeID;
-				res.json({firstTimeLogin:true});
-			} else {
-				locationID = results[0].locationID;
-        employeeID = results[0].employeeID;
-				res.json({firstTimeLogin:true});
-				// if (results && results.length > 0) {
-	      //   locationID = results[0].locationID;
-	      //   employeeID = results[0].employeeID;
-	      //   res.json({
-	      //     success: true,
-	      //     employeeID: results[0].employeeID,
-	      //     locationID: results[0].locationID
-	      //   });
-	      // } else {
-	      //   res.json({success: false});
-	      // }
+			if (userHash === results[0].password) {
+				if (results[0].firstTime !== 'false') {
+					locationID = results[0].locationID;
+					employeeID = results[0].employeeID;
+					res.json({firstTimeLogin:true});
+				} else {
+					if (results && results.length > 0) {
+						locationID = results[0].locationID;
+						employeeID = results[0].employeeID;
+						res.json({
+							success: true,
+							employeeID: results[0].employeeID,
+							locationID: results[0].locationID
+						});
+					} else {
+						res.json({success: false});
+					}
+				}
+			}else {
+				console.log("wrong password");
+				res.json({success:false})
 			}
     }
-		// else {
-		// 	console.log("wrong password");
-		// 	res.json({success:false})
-		// }
   });
 });
 
 router.post('/firstLogin', (req, res) => {
 	console.log("inside firstlogin")
   var passwordInput = req.body.password;
+	var userName = req.body.username
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
 	console.log(userHash)
-	// const updatefirstTime = 'UPDATE Users SET firstTime = ? WHERE username = ?';
-	//const defaultPass = '1000:a49359efa98f87a43580ccaaf14e6a145e78425a08c578f2:21eea828ae679948aac2b486ec26fa840e88eaa25141338d';
-	// connection.query('UPDATE users SET ? WHERE UserID = :UserID',
-	//                      {UserID: userId, Name: name})
-	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = 'goelv'";
-//'UPDATE users SET foo = ?, bar = ?, baz = ? WHERE id = ?', ['a', 'b', 'c', userId], function (error, results, fields)
-	connection.query(updatePass,['false', userHash],(error, result, fields) => {
+	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = ?";
+	connection.query(updatePass,['false', userHash, userName],(error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
