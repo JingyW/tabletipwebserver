@@ -62,6 +62,8 @@ router.post('/login', (req, res) => {
     // else if (userHash === results[0].password){
 		else {
 			if (results[0].firstTime) {
+        locationID = results[0].locationID;
+        employeeID = results[0].employeeID;
 				res.json({firstTimeLogin:true});
 			} else {
 				if (results && results.length > 0) {
