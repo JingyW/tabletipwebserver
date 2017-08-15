@@ -59,7 +59,8 @@ router.post('/login', (req, res) => {
       console.log('Error: ' + error);
       res.json({success: false});
     }
-    else if (userHash === results[0].password){
+    // else if (userHash === results[0].password){
+		else {
 			if (results[0].firstTime) {
 				res.json({firstTimeLogin:true});
 			} else {
@@ -75,10 +76,11 @@ router.post('/login', (req, res) => {
 	        res.json({success: false});
 	      }
 			}
-    } else {
-			console.log("wrong password");
-			res.json({success:false})
-		}
+    }
+		// else {
+		// 	console.log("wrong password");
+		// 	res.json({success:false})
+		// }
   });
 });
 
