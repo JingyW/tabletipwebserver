@@ -61,6 +61,7 @@ router.post('/login', (req, res) => {
     }
     // else if (userHash === results[0].password){
 		else {
+      console.log('IS THIS RIGHT', userHash, results[0].password)
 			if (userHash === results[0].password.toString()) {
 				if (results[0].firstTime !== 'false') {
 					locationID = results[0].locationID;
