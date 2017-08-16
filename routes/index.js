@@ -100,7 +100,7 @@ router.post('/firstLogin', (req, res) => {
 			console.log('Error: ' + error);
 			res.json({success: false});
 		} else {
-			console.log('json')
+			console.log('json adsjfklajlsdf')
 			res.json({success: true});
 		}
 	})
