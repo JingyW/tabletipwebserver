@@ -61,7 +61,8 @@ router.post('/login', (req, res) => {
     }
     // else if (userHash === results[0].password){
 		else {
-			if (userHash === results[0].password.toString()) {
+      console.log(userHash, results[0].password, "compare passwordddd")
+			if (userHash.indexOf(results[0].password.toString()) === 0) {
 				// if (results[0].firstTime !== 'false') {
 					locationID = results[0].locationID;
 					employeeID = results[0].employeeID;
