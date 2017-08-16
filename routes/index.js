@@ -95,7 +95,7 @@ router.post('/firstLogin', (req, res) => {
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
 	console.log(userHash, userName,"firstlogin information")
 	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = ?";
-	connection.query(updatePass,['false', userHash, userName],(error, result, fields) => {
+	connection.query(updatePass,['true', userHash, userName],(error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
