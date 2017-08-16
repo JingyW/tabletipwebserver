@@ -41,16 +41,14 @@ var dt = new Date(yy, mm, dd);
 var secs = dt.valueOf() / 1000;
 var hours = secs / 3600;
 var day = ~~(hours / 24);
-//7dc5efd3fbec24b5055b27cfe0c0eadfde9f7d6d8bbe9888cc89e0aafe1e88b4125e262e84d3584bbddf4185911fdc076e4d09ffb44f152c995634539a1d23b0
 
 
 //Route to login into app
-//Ankur comment
 router.post('/login', (req, res) => {
   console.log('REQBODY', req.body)
   var usernameInput = req.body.username;
   var passwordInput = req.body.password;
-  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var salt = 'salt';
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
   const tableName = 'Users';
   const sql = 'SELECT locationID, employeeID, firstTime, password FROM ?? WHERE username = ?';
@@ -59,9 +57,7 @@ router.post('/login', (req, res) => {
       console.log('Error: ' + error);
       res.json({success: false});
     }
-    // else if (userHash === results[0].password){
 		else {
-      console.log(userHash, results[0].password, "compare passwordddd")
 			if (userHash.indexOf(results[0].password.toString()) === 0) {
 				if (results[0].firstTime !== 'false') {
 					locationID = results[0].locationID;
@@ -91,9 +87,8 @@ router.post('/login', (req, res) => {
 router.post('/firstLogin', (req, res) => {
   var passwordInput = req.body.password;
 	var userName = req.body.username
-  var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
+  var salt = 'salt';
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
-	console.log(userHash, userName,"firstlogin information")
 	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = ?";
 	connection.query(updatePass,['false', userHash, userName],(error, result, fields) => {
 		if (error) {
@@ -155,7 +150,6 @@ router.get('/goalandperformance', (request, response) => {
   const subQuery = "(SELECT * FROM " + connection.escapeId(tableName)
   + " t3 LEFT JOIN Skill_Info t4 USING (ID) WHERE WeekOf < "
   + connection.escape(day) + ") ";
-  console.log(subQuery);
   const subQuery2 = "(SELECT * FROM " + connection.escapeId(tableName)
   + " WHERE WeekOf < " + connection.escape(day) + ") ";
   const sql = "SELECT t1.ExpectedValue, t1.NewQty FROM " + subQuery
