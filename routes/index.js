@@ -63,23 +63,23 @@ router.post('/login', (req, res) => {
 		else {
       console.log(userHash, results[0].password, "compare passwordddd")
 			if (userHash.indexOf(results[0].password.toString()) === 0) {
-				// if (results[0].firstTime !== 'false') {
+				if (results[0].firstTime !== 'false') {
 					locationID = results[0].locationID;
 					employeeID = results[0].employeeID;
 					res.json({firstTimeLogin:true});
-				// } else {
-				// 	if (results && results.length > 0) {
-				// 		locationID = results[0].locationID;
-				// 		employeeID = results[0].employeeID;
-				// 		res.json({
-				// 			success: true,
-				// 			employeeID: results[0].employeeID,
-				// 			locationID: results[0].locationID
-				// 		});
-				// 	} else {
-				// 		res.json({success: false});
-				// 	}
-				// }
+				} else {
+					if (results && results.length > 0) {
+						locationID = results[0].locationID;
+						employeeID = results[0].employeeID;
+						res.json({
+							success: true,
+							employeeID: results[0].employeeID,
+							locationID: results[0].locationID
+						});
+					} else {
+						res.json({success: false});
+					}
+				}
 			}else {
 				console.log("wrong password");
 				res.json({success:false})
@@ -95,7 +95,7 @@ router.post('/firstLogin', (req, res) => {
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
 	console.log(userHash, userName,"firstlogin information")
 	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = ?";
-	connection.query(updatePass,['true', userHash, userName],(error, result, fields) => {
+	connection.query(updatePass,['false', userHash, userName],(error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
