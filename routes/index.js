@@ -61,25 +61,24 @@ router.post('/login', (req, res) => {
     }
     // else if (userHash === results[0].password){
 		else {
-      console.log('IS THIS RIGHT', userHash, results[0].password)
-			if (userHash.indexOf(results[0].password.toString()) === 0) {
-				if (results[0].firstTime !== 'false') {
+			if (userHash === results[0].password.toString()) {
+				// if (results[0].firstTime !== 'false') {
 					locationID = results[0].locationID;
 					employeeID = results[0].employeeID;
 					res.json({firstTimeLogin:true});
-				} else {
-					if (results && results.length > 0) {
-						locationID = results[0].locationID;
-						employeeID = results[0].employeeID;
-						res.json({
-							success: true,
-							employeeID: results[0].employeeID,
-							locationID: results[0].locationID
-						});
-					} else {
-						res.json({success: false});
-					}
-				}
+				// } else {
+				// 	if (results && results.length > 0) {
+				// 		locationID = results[0].locationID;
+				// 		employeeID = results[0].employeeID;
+				// 		res.json({
+				// 			success: true,
+				// 			employeeID: results[0].employeeID,
+				// 			locationID: results[0].locationID
+				// 		});
+				// 	} else {
+				// 		res.json({success: false});
+				// 	}
+				// }
 			}else {
 				console.log("wrong password");
 				res.json({success:false})
@@ -89,14 +88,13 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/firstLogin', (req, res) => {
-	console.log("inside firstlogin")
   var passwordInput = req.body.password;
 	var userName = req.body.username
   var salt = 'salt'; //CryptoJS.lib.WordArray.random(128/8)
   var userHash = CryptoJS.PBKDF2(passwordInput, salt, { keySize: 512/32, iterations: 1000 }).toString();
 	console.log(userHash)
 	const updatePass = "UPDATE `Users` SET `firstTime` = ?, `password` = ? WHERE `username` = ?";
-	connection.query(updatePass,['false', userHash, userName],(error, result, fields) => {
+	connection.query(updatePass,['true', userHash, userName],(error, result, fields) => {
 		if (error) {
 			console.log('Error: ' + error);
 			res.json({success: false});
